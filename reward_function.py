@@ -14,9 +14,9 @@ def reward_function1(params):
     
     # Give higher reward if the car is closer to center line and vice versa
     if distance_from_center <= marker_1:
-        reward = 1.0
+        reward = 0.8
     elif distance_from_center <= marker_2:
-        reward = 0.5
+        reward = 0.4
     elif distance_from_center <= marker_3:
         reward = 0.1
     else:
@@ -71,7 +71,7 @@ def reward_function3(params):
         reward = 1e-3  # likely crashed/ close to off track
 
     # Steering penality threshold, change the number based on your action space setting
-    ABS_STEERING_THRESHOLD = 15
+    ABS_STEERING_THRESHOLD = 30
 
     # Penalize reward if the agent is steering too much
     if steering > ABS_STEERING_THRESHOLD:
@@ -81,4 +81,8 @@ def reward_function3(params):
 
 def reward_function(params):
     reward = reward_function1(params) + reward_function2(params)*2 + reward_function3(params)*4
+
+    SPEED_THRESHOLD = 3
+    if params['speed'] < SPEED_THRESHOLD:
+        reward *= 0.5    
     return float(reward)
